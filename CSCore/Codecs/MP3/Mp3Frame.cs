@@ -120,12 +120,11 @@ namespace CSCore.Codecs.MP3
                 throw new ArgumentException("Stream not readable.");
 
             byte[] buffer = new byte[4];
-
-            if ((stream.Read(buffer, 0, buffer.Length)) < 4)
+            int read = stream.Read(buffer, 0, buffer.Length);
+            if (read < 4)
             {
-                Debug.WriteLine("Stream is EOF.");
-                //do not throw EndOfStreamException --> will be caught and will trigger retry
-                throw new InternalEofException("Stream is EOF.");
+                Debug.WriteLine("Stream is EOF. got " + read);
+                return false;
             }
 
             //int totalRead = 0;
